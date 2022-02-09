@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import {useContext,useRef} from 'react'
+import {TodosContext} from './store/todosContext'
+import {addJob,setJob} from './store/actions'
 
 function App() {
+  const [state,dispatch] = useContext(TodosContext)
+  const {job,jobs}=state
+  console.log(state)
+  const handleAdd=()=>{
+   // console.log('add',job)
+    dispatch(addJob(job))
+    dispatch(setJob(''))
+    inputRef.current.focus()
+  }
+  const inputRef=useRef()
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div >
+      <input placeholder='Type here...' 
+      ref={inputRef}
+      value={job} onChange={(e)=>dispatch(setJob(e.target.value))}/>
+      <button onClick={handleAdd}>Add</button>
+      <ul>
+        {jobs.map((job,index)=>(<li key={index}>
+          {job}
+        </li>))}
+      </ul>
     </div>
   );
 }
